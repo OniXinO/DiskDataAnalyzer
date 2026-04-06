@@ -20,11 +20,13 @@
 
 ## Phase 5: Advanced Analysis Features
 
-### Task 5.1: LLM Providers with 4 Options
+### Task 5.1: LLM Providers with Plugin Architecture
 
 **Files:**
-- Create: `src/core/llm_providers.py`
+- Create: `src/core/llm_providers.py` (базовий клас + 4 провайдери)
+- Create: `src/core/llm_registry.py` (реєстр провайдерів для розширення)
 - Create: `tests/test_llm_providers.py`
+- Create: `tests/test_llm_registry.py`
 - Modify: `requirements.txt`
 
 **Step 1: Write failing test**
@@ -392,7 +394,96 @@ ollama>=0.1.0      # Локальний LLM
 # requests>=2.31.0 вже є в requirements
 ```
 
-**Step 6: Commit**
+**Step 6: Create LLM Registry for plugin architecture**
+
+Create: `src/core/llm_registry.py`
+
+```python
+"""
+Реєстр LLM провайдерів для легкого розширення
+Дозволяє додавати нові провайдери без зміни основного коду
+"""
+
+import logging
+from typing import Dict, Type, List
+from core.llm_providers import LLMProvider
+
+logger = logging.getLogger(__name__)
+
+
+class LLMRegistry:
+    """Реєстр LLM провайдерів"""
+    
+    _providers: Dict[str, Type[LLMProvider]] = {}
+    
+    @classmethod
+    def register(cls, name: str, provider_class: Type[LLMProvider]):
+        """Зареєструвати новий провайдер"""
+        if not issubclass(provider_class, LLMProvider):
+            raise TypeError(f"{provider_class} must inherit from LLMProvider")
+        
+        cls._providers[name] = provider_class
+        logger.info(f"Registered LLM provider: {name}")
+    
+    @classmethod
+    def get_provider(cls, name: str, **kwargs) -> LLMProvider:
+        """Отримати екземпляр провайдера"""
+        if name not in cls._providers:
+            raise KeyError(f"Provider '{name}' not registered")
+        
+        return cls._providers[name](**kwargs)
+    
+    @classmethod
+    def list_providers(cls) -> List[str]:
+        """Список зареєстрованих провайдерів"""
+        return list(cls._providers.keys())
+
+
+# Автореєстрація вбудованих провайдерів
+def _register_builtin_providers():
+    from core.llm_providers import (
+        ClaudeProvider, OpenAIProvider, OllamaProvider, KiroAIProvider,
+        ANTHROPIC_AVAILABLE, OPENAI_AVAILABLE, OLLAMA_AVAILABLE, REQUESTS_AVAILABLE
+    )
+    
+    if ANTHROPIC_AVAILABLE:
+        LLMRegistry.register("claude", ClaudeProvider)
+    if OPENAI_AVAILABLE:
+        LLMRegistry.register("openai", OpenAIProvider)
+    if OLLAMA_AVAILABLE:
+        LLMRegistry.register("ollama", OllamaProvider)
+    if REQUESTS_AVAILABLE:
+        LLMRegistry.register("kiroai", KiroAIProvider)
+
+_register_builtin_providers()
+```
+
+**Step 7: Test registry**
+
+Create: `tests/test_llm_registry.py`
+
+```python
+import unittest
+from core.llm_registry import LLMRegistry
+from core.llm_providers import LLMProvider
+
+class MockProvider(LLMProvider):
+    def classify_file(self, filename, context):
+        return {"category": "test"}
+
+class TestLLMRegistry(unittest.TestCase):
+    def test_register_and_get_provider(self):
+        LLMRegistry.register("mock", MockProvider)
+        provider = LLMRegistry.get_provider("mock")
+        self.assertIsInstance(provider, MockProvider)
+    
+    def test_list_providers(self):
+        providers = LLMRegistry.list_providers()
+        self.assertIsInstance(providers, list)
+        self.assertGreater(len(providers), 0)
+```
+
+**Step 8: Commit**
 
 ```bash
 git add src/core/llm_providers.py tests/test_llm_providers.py requirements.txt
