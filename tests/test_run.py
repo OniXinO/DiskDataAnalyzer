@@ -15,14 +15,14 @@ class TestRun(unittest.TestCase):
 
     def test_run_has_main(self):
         """Тест що run.py має main функцію"""
-        with open("run.py") as f:
+        with open("run.py", encoding='utf-8') as f:
             content = f.read()
             self.assertIn("def main()", content)
             self.assertIn("if __name__ == '__main__'", content)
 
     def test_run_imports_main_window(self):
         """Тест що run.py імпортує MainWindow"""
-        with open("run.py") as f:
+        with open("run.py", encoding='utf-8') as f:
             content = f.read()
             self.assertIn("from src.gui.main_window import MainWindow", content)
 

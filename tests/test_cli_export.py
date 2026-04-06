@@ -37,7 +37,7 @@ class TestCLIExport(unittest.TestCase):
             self.test_dir,
             '--export', 'json',
             '--output', output_file
-        ], capture_output=True, text=True)
+        ], capture_output=True, text=True, encoding='utf-8', errors='replace')
 
         self.assertEqual(result.returncode, 0)
         self.assertTrue(os.path.exists(output_file))
@@ -51,7 +51,7 @@ class TestCLIExport(unittest.TestCase):
             self.test_dir,
             '--export', 'json',
             '--output', output_file
-        ], capture_output=True)
+        ], capture_output=True, encoding='utf-8', errors='replace')
 
         with open(output_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -68,7 +68,7 @@ class TestCLIExport(unittest.TestCase):
             self.test_dir,
             '--export', 'csv',
             '--output', output_file
-        ], capture_output=True, text=True)
+        ], capture_output=True, text=True, encoding='utf-8', errors='replace')
 
         self.assertEqual(result.returncode, 0)
         self.assertTrue(os.path.exists(output_file))
@@ -82,7 +82,7 @@ class TestCLIExport(unittest.TestCase):
             self.test_dir,
             '--export', 'html',
             '--output', output_file
-        ], capture_output=True, text=True)
+        ], capture_output=True, text=True, encoding='utf-8', errors='replace')
 
         self.assertEqual(result.returncode, 0)
         self.assertTrue(os.path.exists(output_file))
@@ -96,7 +96,7 @@ class TestCLIExport(unittest.TestCase):
             self.test_dir,
             '--export', 'html',
             '--output', output_file
-        ], capture_output=True)
+        ], capture_output=True, encoding='utf-8', errors='replace')
 
         with open(output_file, 'r', encoding='utf-8') as f:
             content = f.read()
