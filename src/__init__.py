@@ -4,7 +4,7 @@ DiskDataAnalyzer - Універсальний аналізатор дисків 
 Основний пакет проєкту
 """
 
-__version__ = '0.5.0'
+__version__ = '0.6.0'
 __author__ = 'Created with Claude Code CLI'
 __license__ = 'MIT'
 

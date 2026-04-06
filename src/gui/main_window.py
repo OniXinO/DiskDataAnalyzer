@@ -22,7 +22,7 @@ class MainWindow:
             root: Tkinter root вікно
         """
         self.root = root
-        self.title = "DiskDataAnalyzer v0.5.0"
+        self.title = "DiskDataAnalyzer v0.6.0"
         self.root.title(self.title)
         self.root.geometry("1000x700")
 
