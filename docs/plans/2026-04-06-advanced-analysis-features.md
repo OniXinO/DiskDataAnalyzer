@@ -30,6 +30,24 @@
 
 ### Task 5.1: LLM Providers with Plugin Architecture ✅ COMPLETED
 
+### Task 5.2: Classification Cache ✅ COMPLETED
+
+### Task 5.3: File Classifier ✅ COMPLETED
+
+### Task 5.4: Directory Tree Builder ✅ COMPLETED
+
+### Task 5.5: Folder Compare ✅ COMPLETED
+
+### Task 5.6: Extended Junk Detector ✅ COMPLETED
+
+### Task 5.7: GUI Tab - File Classifier ✅ COMPLETED
+
+### Task 5.8: GUI Tab - Directory Tree ✅ COMPLETED
+
+### Task 5.9: GUI Tab - Folder Compare ✅ COMPLETED
+
+### Task 5.10: GUI Tab - Extended Junk Detector ✅ COMPLETED
+
 **Skills:** `/using-superpowers` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
 
 **Files:**
