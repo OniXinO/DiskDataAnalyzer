@@ -17,6 +17,12 @@ import zipfile
 import tarfile
 import json
 
+# Імпорт експортерів
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+from exporters.json_exporter import export_to_json
+from exporters.csv_exporter import export_to_csv
+from exporters.html_exporter import export_to_html
+
 # Виправлення кодування для Windows консолі
 if sys.platform == 'win32':
     import codecs
@@ -658,6 +664,38 @@ def generate_summary_report(all_results, report_dir):
 
     print(f"\n✅ Підсумковий звіт збережено: {report_path}")
 
+def export_results(results, export_format, output_file):
+    """
+    Експортувати результати аналізу у вказаному форматі
+
+    Args:
+        results: Словник з результатами аналізу
+        export_format: Формат експорту ('json', 'csv', 'html')
+        output_file: Шлях до вихідного файлу
+    """
+    try:
+        if export_format == 'json':
+            export_to_json(results, output_file)
+            print(f"\n✅ JSON звіт збережено: {output_file}")
+        elif export_format == 'csv':
+            # Для CSV конвертуємо результати в список словників
+            csv_data = []
+            if 'top_directories' in results:
+                for dir_info in results['top_directories']:
+                    csv_data.append({
+                        'type': 'directory',
+                        'path': dir_info['path'],
+                        'size': dir_info['size']
+                    })
+            export_to_csv(csv_data, output_file)
+            print(f"\n✅ CSV звіт збережено: {output_file}")
+        elif export_format == 'html':
+            export_to_html(results, output_file)
+            print(f"\n✅ HTML звіт збережено: {output_file}")
+    except Exception as e:
+        print(f"\n❌ Помилка експорту: {e}")
+        sys.exit(1)
+
 def main():
     parser = argparse.ArgumentParser(
         description='Універсальний аналізатор дисків для Windows'
@@ -677,19 +715,39 @@ def main():
         default='O:/disk_reports',
         help='Директорія для збереження звітів (за замовчуванням: O:/disk_reports)'
     )
+    parser.add_argument(
+        '--export',
+        choices=['json', 'csv', 'html'],
+        help='Формат експорту звіту (json, csv, html)'
+    )
+    parser.add_argument(
+        '--output',
+        help='Шлях до вихідного файлу для експорту'
+    )
 
     args = parser.parse_args()
+
+    # Перевірка що --export та --output використовуються разом
+    if args.export and not args.output:
+        parser.error("--export потребує --output")
+    if args.output and not args.export:
+        parser.error("--output потребує --export")
 
     if args.all:
         analyze_all_drives(args.report_dir)
     elif args.drive:
-        analyze_disk(args.drive, args.report_dir)
+        results = analyze_disk(args.drive, args.report_dir)
+
+        # Експорт якщо вказано
+        if args.export and args.output:
+            export_results(results, args.export, args.output)
     else:
         parser.print_help()
         print("\nПриклади використання:")
         print("  python analyze_disk.py C:")
         print("  python analyze_disk.py D: --report-dir O:/reports")
         print("  python analyze_disk.py --all")
+        print("  python analyze_disk.py C: --export json --output report.json")
 
 if __name__ == '__main__':
     try:
