@@ -127,6 +127,25 @@ def analyze_archive(filepath):
             except ImportError:
                 pass  # rarfile not installed
 
+            # Try 7z
+            if result['type'] is None and filepath.endswith('.7z'):
+                try:
+                    import py7zr
+                    with py7zr.SevenZipFile(filepath, 'r') as zf:
+                        result['type'] = '7z'
+                        for name, info in zf.list():
+                            if not info.is_directory:
+                                result['files_count'] += 1
+                                result['uncompressed_size'] += info.uncompressed
+                                result['file_list'].append({
+                                    'name': name,
+                                    'size': info.uncompressed
+                                })
+                except ImportError:
+                    pass  # py7zr not installed
+                except Exception:
+                    pass  # Invalid 7z file
+
         if result['uncompressed_size'] > 0:
             compressed_size = os.path.getsize(filepath)
             result['compression_ratio'] = (1 - compressed_size / result['uncompressed_size']) * 100
