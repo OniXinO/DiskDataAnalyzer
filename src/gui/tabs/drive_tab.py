@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import ttk
 import string
 import os
+from gui.workers.analysis_worker import AnalysisWorker
 
 
 class DriveTab(ttk.Frame):
@@ -47,6 +48,10 @@ class DriveTab(ttk.Frame):
         )
         self.analyze_btn.pack(pady=10)
 
+        # Статус лейбл
+        self.status_label = ttk.Label(self, text="", font=('Arial', 10))
+        self.status_label.pack(pady=5)
+
     def get_available_drives(self):
         """
         Отримати список доступних дисків
@@ -63,5 +68,32 @@ class DriveTab(ttk.Frame):
 
     def start_analysis(self):
         """Запустити аналіз вибраного диску"""
-        # Буде реалізовано в наступній задачі
-        pass
+        drive = self.drive_var.get()
+        if not drive:
+            self.status_label.config(text="Please select a drive", foreground='red')
+            return
+
+        # Блокуємо кнопку під час аналізу
+        self.analyze_btn.config(state='disabled', text='Analyzing...')
+        self.status_label.config(text=f'Analyzing {drive}...', foreground='blue')
+
+        # Запускаємо worker в окремому потоці
+        worker = AnalysisWorker(drive, self.on_analysis_complete)
+        worker.start()
+
+    def on_analysis_complete(self, results):
+        """
+        Callback після завершення аналізу
+
+        Args:
+            results: Результати аналізу
+        """
+        # Розблоковуємо кнопку
+        self.analyze_btn.config(state='normal', text='Analyze')
+
+        if 'error' in results:
+            self.status_label.config(text=f"Error: {results['error']}", foreground='red')
+        else:
+            self.status_label.config(text='Analysis complete!', foreground='green')
+            # Результати будуть відображені в наступній задачі
+
