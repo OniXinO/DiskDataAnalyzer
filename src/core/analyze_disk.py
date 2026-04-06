@@ -75,7 +75,7 @@ def calculate_file_hash(filepath, algorithm='md5'):
         return None
 
 def analyze_archive(filepath):
-    """Аналіз архіву (zip, tar, tar.gz)"""
+    """Аналіз архіву (zip, tar, tar.gz, rar)"""
     result = {
         'type': None,
         'files_count': 0,
@@ -108,6 +108,24 @@ def analyze_archive(filepath):
                             'name': member.name,
                             'size': member.size
                         })
+        else:
+            # Try RAR
+            try:
+                import rarfile
+                if rarfile.is_rarfile(filepath):
+                    result['type'] = 'rar'
+                    with rarfile.RarFile(filepath, 'r') as rf:
+                        for info in rf.infolist():
+                            if not info.isdir():
+                                result['files_count'] += 1
+                                result['uncompressed_size'] += info.file_size
+                                result['file_list'].append({
+                                    'name': info.filename,
+                                    'size': info.file_size,
+                                    'compressed': info.compress_size
+                                })
+            except ImportError:
+                pass  # rarfile not installed
 
         if result['uncompressed_size'] > 0:
             compressed_size = os.path.getsize(filepath)

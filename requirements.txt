@@ -10,3 +10,4 @@
 # pyinstaller>=5.0.0  # для створення .exe
 tqdm>=4.65.0
 colorama>=0.4.6
+rarfile>=4.0
