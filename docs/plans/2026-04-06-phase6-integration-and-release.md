@@ -24,9 +24,19 @@
 
 **Skills Required:**
 - `/using-superpowers` - ОБОВ'ЯЗКОВО на початку кожної задачі
+- `/find-bugs` - ОБОВ'ЯЗКОВО перед створенням релізу
 - `/test-driven-development` - для всіх задач з кодом
 - `/verification-before-completion` - перед кожним комітом
 - `/code-reviewer` - після завершення кожної фази
+
+**Pre-Release Requirements:**
+- ✅ Критичний аудит проєкту (CRITICAL_ANALYSIS_REPORT.md)
+- ✅ Всі тести проходять
+- ✅ Немає критичних вразливостей безпеки
+- ✅ Немає ризиків втрати даних
+- ✅ Підтвердження користувача на реліз
+
+**ПРАВИЛО:** Оптимізація та критичний огляд → ПОТІМ реліз, НЕ навпаки.
 
 ---
 
@@ -345,11 +355,39 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 ### Task 6.2.2: Create Git Tag and GitHub Release v0.5.0
 
-**Skills:** `/using-superpowers` → verification-before-completion
+**Skills:** `/using-superpowers` → `/find-bugs` → verification-before-completion
+
+**CRITICAL:** Ця задача вимагає попереднього критичного аудиту проєкту!
 
 **Step 1: Використати `/using-superpowers` skill**
 
-**Step 2: Verify all tests pass**
+**Step 2: Виконати критичний аудит проєкту**
+
+**ОБОВ'ЯЗКОВО перед створенням релізу!**
+
+```bash
+# Використати /find-bugs skill для повного аналізу
+# Створити CRITICAL_ANALYSIS_REPORT.md
+# Перевірити:
+# - Безпека (SQL injection, command injection, path traversal)
+# - Якість коду (dead code, duplicates, error handling)
+# - Продуктивність (bottlenecks, resource leaks)
+# - Тести (coverage, edge cases)
+```
+
+**Критерії проходження аудиту:**
+- ✅ Немає критичних вразливостей безпеки
+- ✅ Немає ризиків втрати даних
+- ✅ Всі тести проходять
+- ⚠️ Середні/низькі проблеми задокументовані
+
+**Якщо аудит НЕ пройдено:** ЗУПИНИТИ реліз, виправити критичні проблеми, повторити аудит.
+
+**Step 3: Отримати підтвердження користувача**
+
+Показати CRITICAL_ANALYSIS_REPORT.md користувачу та отримати явне підтвердження на реліз.
+
+**Step 4: Verify all tests pass**
 
 ```bash
 python -m unittest discover -s tests -v

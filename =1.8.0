@@ -1,0 +1,5 @@
+Collecting send2trash
+  Downloading send2trash-2.1.0-py3-none-any.whl.metadata (4.1 kB)
+Downloading send2trash-2.1.0-py3-none-any.whl (17 kB)
+Installing collected packages: send2trash
+Successfully installed send2trash-2.1.0
