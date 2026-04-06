@@ -4,6 +4,10 @@
 
 > **CRITICAL:** ЗАВЖДИ починати кожну задачу з `/using-superpowers` skill для правильного роутингу worker agents!
 
+**Current Version:** 0.5.0 ✅ COMPLETED
+**Previous Version:** 0.1.0
+**Status:** ✅ Complete (all 10 tasks finished)
+
 **Goal:** Додати класифікацію файлів з 4 LLM провайдерами (Claude, OpenAI, Ollama, KiroAI), дерево каталогів, порівняння папок, розширене виявлення сміття, GUI вкладки.
 
 **Architecture:** 

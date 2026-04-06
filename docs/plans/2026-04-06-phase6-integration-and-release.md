@@ -4,6 +4,10 @@
 
 > **CRITICAL:** ЗАВЖДИ починати кожну задачу з `/using-superpowers` skill для правильного роутингу worker agents!
 
+**Current Version:** 0.5.0
+**Target Version:** 0.6.0
+**Status:** ⏳ Planned (0/9 tasks completed)
+
 **Goal:** Інтегрувати 4 нові GUI вкладки в головне вікно, провести повне тестування, оновити документацію, створити GitHub релізи для v0.5.0 та v0.6.0.
 
 **Architecture:** 

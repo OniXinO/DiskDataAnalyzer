@@ -2,6 +2,12 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
+**Current Version:** 0.5.0
+**Target Version:** 0.2.0 (retroactive - partially implemented)
+**Status:** 🔄 Partial (features exist but not formally released)
+
+**Note:** This plan describes features that were partially implemented in the codebase but never formally released as v0.2.0. See VERSION_HISTORY.md for details.
+
 **Goal:** Покращити CLI функціонал DiskDataAnalyzer з оптимізацією продуктивності, розширеним аналізом та експортом звітів
 
 **Architecture:** Додаємо багатопотоковість для швидкого сканування, систему кешування результатів, прогрес-бар для UX, підтримку додаткових форматів архівів, та експортери для різних форматів звітів. CLI отримує кольоровий вивід та інтерактивний режим.

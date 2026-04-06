@@ -2,6 +2,12 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
+**Current Version:** 0.5.0
+**Target Versions:** 0.3.0, 0.4.0, 1.0.0 (multiple phases)
+**Status:** 🔄 Partial (Phases 2-4 partially implemented, not formally released)
+
+**Note:** This plan describes features across multiple versions. Some features were implemented but never formally released. See VERSION_HISTORY.md for complete version timeline.
+
 **Goal:** Complete DiskDataAnalyzer with GUI, advanced features, and Windows distribution
 
 **Architecture:** 
