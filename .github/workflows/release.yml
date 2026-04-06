@@ -47,9 +47,8 @@ jobs:
         files: |
           dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip
           dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip.sha256
-          CRITICAL_ANALYSIS_REPORT.md
+          AUDIT_REPORT_v0.6.0.md
           CHANGELOG.md
-        body_path: RELEASE_NOTES_${{ github.ref_name }}.md
         draft: false
         prerelease: false
       env:
