@@ -474,8 +474,9 @@ def analyze_disk(drive_letter, report_dir='O:/disk_reports'):
                     print(f"             {filepath}")
 
     # 8. Генерація звіту
-    print(f"\n💾 Генерація звіту...")
-    generate_report(results, report_dir)
+    if report_dir:
+        print(f"\n💾 Генерація звіту...")
+        generate_report(results, report_dir)
 
     return results
 
