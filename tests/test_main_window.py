@@ -31,8 +31,8 @@ class TestMainWindow(unittest.TestCase):
     def test_window_has_title(self):
         """Тест що вікно має заголовок"""
         window = MainWindow(self.root)
-        self.assertEqual(window.title, "DiskDataAnalyzer")
-        self.assertEqual(self.root.title(), "DiskDataAnalyzer")
+        self.assertEqual(window.title, "DiskDataAnalyzer v0.5.0")
+        self.assertEqual(self.root.title(), "DiskDataAnalyzer v0.5.0")
 
     def test_window_has_notebook(self):
         """Тест що вікно має notebook для вкладок"""
