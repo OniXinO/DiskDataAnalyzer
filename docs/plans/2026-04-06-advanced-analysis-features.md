@@ -2,6 +2,8 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
+> **CRITICAL:** ЗАВЖДИ починати кожну задачу з `/using-superpowers` skill для правильного роутингу worker agents!
+
 **Goal:** Додати класифікацію файлів з 4 LLM провайдерами (Claude, OpenAI, Ollama, KiroAI), дерево каталогів, порівняння папок, розширене виявлення сміття, GUI вкладки.
 
 **Architecture:** 
@@ -16,11 +18,19 @@
 - Cache: SQLite
 - Testing: unittest
 
+**Skills Required:**
+- `/using-superpowers` - ОБОВ'ЯЗКОВО на початку кожної задачі
+- `/test-driven-development` - для всіх задач з кодом
+- `/verification-before-completion` - перед кожним комітом
+- `/code-reviewer` - після завершення кожної задачі
+
 ---
 
 ## Phase 5: Advanced Analysis Features
 
-### Task 5.1: LLM Providers with Plugin Architecture
+### Task 5.1: LLM Providers with Plugin Architecture ✅ COMPLETED
+
+**Skills:** `/using-superpowers` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
 
 **Files:**
 - Create: `src/core/llm_providers.py` (базовий клас + 4 провайдери)
@@ -503,10 +513,177 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 ---
 
-## Решта плану залишається без змін (Tasks 5.2-5.10)
+### Task 5.2: Classification Cache ✅ COMPLETED
 
-Детальний план для Tasks 5.2-5.10 вже описаний вище в попередньому повідомленні.
+**Skills:** `/using-superpowers` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/core/classification_cache.py`
+- Create: `tests/test_classification_cache.py`
+
+**Implementation:** SQLite-based cache with get/set/clear/get_stats methods, cache invalidation on file size/mtime changes.
+
+**Status:** ✅ Completed with 9/9 tests passing
 
 ---
 
-**Worker compliance:** followed task-planner format
+### Task 5.3: File Classifier (Hybrid Approach)
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/core/file_classifier.py`
+- Create: `tests/test_file_classifier.py`
+
+**Approach:**
+1. Pattern matching (90%): швидка класифікація за назвою/розширенням
+2. LLM fallback (10%): складні випадки через LLM провайдер
+3. Cache integration: перевірка кешу перед LLM викликом
+
+---
+
+### Task 5.4: Directory Tree Builder
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/core/directory_tree.py`
+- Create: `tests/test_directory_tree.py`
+
+**Features:**
+- Рекурсивна побудова дерева каталогів
+- Підтримка фільтрації (ignore patterns)
+- Експорт в текстовий формат
+- Статистика (кількість файлів/папок, загальний розмір)
+
+---
+
+### Task 5.5: Folder Compare
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/core/folder_compare.py`
+- Create: `tests/test_folder_compare.py`
+
+**Features:**
+- Порівняння двох папок за структурою
+- Виявлення відмінностей (нові/видалені/змінені файли)
+- Порівняння за hash для виявлення ідентичних файлів
+- Звіт про відмінності
+
+---
+
+### Task 5.6: Extended Junk Detector
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Modify: `src/core/junk_detector.py`
+- Modify: `tests/test_junk_detector.py`
+
+**New Features:**
+- Виявлення залишкових файлів після деінсталяції
+- Пошук порожніх папок
+- Виявлення застарілих backup файлів
+- Пошук дублікатів за hash
+- Безпечність видалення (whitelist системних файлів)
+
+---
+
+### Task 5.7: GUI Tab - File Classifier
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/gui/classifier_tab.py`
+- Create: `tests/test_classifier_tab.py`
+
+**Features:**
+- Вибір папки для класифікації
+- Вибір LLM провайдера
+- Прогрес-бар
+- Таблиця результатів з категоріями
+- Експорт результатів
+
+---
+
+### Task 5.8: GUI Tab - Directory Tree
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/gui/tree_tab.py`
+- Create: `tests/test_tree_tab.py`
+
+**Features:**
+- Вибір папки
+- Візуалізація дерева (TreeView widget)
+- Фільтри (ignore patterns)
+- Експорт в текст
+- Статистика
+
+---
+
+### Task 5.9: GUI Tab - Folder Compare
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/gui/compare_tab.py`
+- Create: `tests/test_compare_tab.py`
+
+**Features:**
+- Вибір двох папок
+- Кнопка "Compare"
+- Таблиця відмінностей (нові/видалені/змінені)
+- Кольорове виділення
+- Експорт звіту
+
+---
+
+### Task 5.10: GUI Tab - Extended Junk Detector
+
+**Skills:** `/using-superpowers` → `/test-driven-development` → test-engineer → feature-implementer → code-reviewer → verification-before-completion
+
+**Files:**
+- Create: `src/gui/junk_tab.py`
+- Create: `tests/test_junk_tab.py`
+
+**Features:**
+- Вибір папки для сканування
+- Чекбокси для типів сміття (temp files, duplicates, empty folders, etc.)
+- Прогрес-бар
+- Таблиця знайденого сміття з розміром
+- Кнопка "Safe Delete" (з підтвердженням)
+- Статистика звільненого місця
+
+---
+
+## Verification Checklist (для кожної задачі)
+
+**Перед комітом ОБОВ'ЯЗКОВО:**
+- [ ] Використано `/using-superpowers` skill на початку
+- [ ] Використано `/test-driven-development` для коду
+- [ ] Всі тести проходять (pytest -v)
+- [ ] Немає регресій (повний test suite)
+- [ ] Використано `/verification-before-completion` перед комітом
+- [ ] Код відрев'ювано через `/code-reviewer`
+- [ ] Коміт створено з чітким повідомленням
+
+---
+
+## Progress Tracking
+
+- ✅ Task 5.1: LLM Providers (4 провайдери + registry)
+- ✅ Task 5.2: Classification Cache (SQLite кеш)
+- ⏳ Task 5.3: File Classifier (наступна)
+- ⏳ Task 5.4: Directory Tree Builder
+- ⏳ Task 5.5: Folder Compare
+- ⏳ Task 5.6: Extended Junk Detector
+- ⏳ Task 5.7: GUI Tab - Classifier
+- ⏳ Task 5.8: GUI Tab - Tree
+- ⏳ Task 5.9: GUI Tab - Compare
+- ⏳ Task 5.10: GUI Tab - Junk
+
+**Current Status:** 2/10 tasks completed (20%)
