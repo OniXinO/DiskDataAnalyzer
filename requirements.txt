@@ -22,5 +22,11 @@ APScheduler>=3.10.0
 # Залежності для packaging
 pyinstaller>=5.10.0
 
+# Залежності для LLM класифікації (опціональні)
+anthropic>=0.18.0  # Claude API
+openai>=1.0.0      # OpenAI API
+ollama>=0.1.0      # Локальний LLM
+# requests>=2.31.0 вже є вище
+
 # Майбутні залежності для пакування:
 # pyinstaller>=5.0.0  # для створення .exe
