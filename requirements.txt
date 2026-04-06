@@ -19,5 +19,8 @@ send2trash>=1.8.0
 # Залежності для scheduler
 APScheduler>=3.10.0
 
+# Залежності для packaging
+pyinstaller>=5.10.0
+
 # Майбутні залежності для пакування:
 # pyinstaller>=5.0.0  # для створення .exe
