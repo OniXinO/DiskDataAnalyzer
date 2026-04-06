@@ -830,7 +830,9 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 ### Task 6.4.1: Create Git Tag and GitHub Release v0.6.0
 
-**Skills:** `/using-superpowers` → verification-before-completion
+**Skills:** `/using-superpowers` → `/find-bugs` → verification-before-completion
+
+**CRITICAL:** Ця задача вимагає попереднього критичного аудиту проєкту!
 
 **Step 1: Використати `/using-superpowers` skill**
 
@@ -840,7 +842,44 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 python -m unittest discover -s tests -v
 ```
 
-**Step 3: Create git tag**
+**Step 3: Push commits to GitHub**
+
+```bash
+git push origin master
+```
+
+**Step 4: Виконати критичний аудит нових файлів v0.6.0**
+
+**ОБОВ'ЯЗКОВО після push, але ПЕРЕД tag і release!**
+
+```bash
+# Використати /find-bugs skill для аналізу нових файлів:
+# - run.py (entry point)
+# - .github/workflows/ci.yml (CI workflow)
+# - .github/workflows/release.yml (Release workflow)
+# - docs/USER_GUIDE.md (documentation)
+# - tests/test_run.py (tests)
+```
+
+**Критерії проходження аудиту:**
+- ✅ Немає критичних вразливостей безпеки
+- ✅ Немає ризиків втрати даних
+- ✅ Всі тести проходять
+- ⚠️ Середні/низькі проблеми задокументовані
+
+**Якщо аудит НЕ пройдено:** ЗУПИНИТИ реліз, виправити критичні проблеми, повторити аудит.
+
+**Step 5: Отримати підтвердження користувача**
+
+Показати результати аудиту користувачу та отримати явне підтвердження на реліз.
+
+**Step 6: Create git tag**
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+**Step 6: Create git tag**
 
 ```bash
 git tag -a v0.6.0 -m "Release v0.6.0 - Integration & Documentation
@@ -857,19 +896,19 @@ Improved:
 - Release process"
 ```
 
-**Step 4: Push tag to GitHub**
+**Step 7: Push tag to GitHub**
 
 ```bash
 git push origin v0.6.0
 ```
 
-**Step 5: Verify GitHub Actions triggered**
+**Step 8: Verify GitHub Actions triggered**
 
 ```bash
 gh run list --workflow=release.yml
 ```
 
-**Step 6: Verify release created**
+**Step 9: Verify release created**
 
 ```bash
 gh release view v0.6.0
