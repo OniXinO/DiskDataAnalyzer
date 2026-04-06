@@ -16,5 +16,8 @@ reportlab>=3.6.0
 # Залежності для cleanup
 send2trash>=1.8.0
 
+# Залежності для scheduler
+APScheduler>=3.10.0
+
 # Майбутні залежності для пакування:
 # pyinstaller>=5.0.0  # для створення .exe
