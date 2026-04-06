@@ -17,6 +17,12 @@ import zipfile
 import tarfile
 import json
 
+# Виправлення кодування для Windows консолі
+if sys.platform == 'win32':
+    import codecs
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
+
 def get_disk_usage(path):
     """Отримати інформацію про використання диску"""
     try:
@@ -35,11 +41,17 @@ def get_directory_size(path):
     total = 0
     try:
         for entry in os.scandir(path):
-            if entry.is_file(follow_symlinks=False):
-                total += entry.stat().st_size
-            elif entry.is_dir(follow_symlinks=False):
-                total += get_directory_size(entry.path)
-    except (PermissionError, FileNotFoundError):
+            try:
+                if entry.is_file(follow_symlinks=False):
+                    total += entry.stat(follow_symlinks=False).st_size
+                elif entry.is_dir(follow_symlinks=False):
+                    # Перевірка на symlink перед рекурсією
+                    if not entry.is_symlink():
+                        total += get_directory_size(entry.path)
+            except (PermissionError, FileNotFoundError, OSError):
+                # Ігноруємо помилки доступу та циклічні посилання
+                pass
+    except (PermissionError, FileNotFoundError, OSError):
         pass
     return total
 
