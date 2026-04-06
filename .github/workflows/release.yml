@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Run tests
+      run: |
+        python -m unittest discover -s tests -v
+
+    - name: Build Windows executable
+      run: |
+        pyinstaller --onefile --windowed --name DiskDataAnalyzer-${{ github.ref_name }} src/main.py
+
+    - name: Create ZIP package
+      run: |
+        Compress-Archive -Path dist/DiskDataAnalyzer-${{ github.ref_name }}.exe -DestinationPath dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip
+
+    - name: Generate SHA256
+      run: |
+        Get-FileHash dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip -Algorithm SHA256 | Select-Object -ExpandProperty Hash | Out-File -FilePath dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip.sha256
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip
+          dist/DiskDataAnalyzer-${{ github.ref_name }}-Windows.zip.sha256
+          CRITICAL_ANALYSIS_REPORT.md
+          CHANGELOG.md
+        body_path: RELEASE_NOTES_${{ github.ref_name }}.md
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
