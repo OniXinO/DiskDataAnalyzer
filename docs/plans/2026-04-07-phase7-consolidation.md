@@ -859,7 +859,9 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>"
 
 ### Task 7.4.2: Create GitHub Release v0.7.0 with Binary
 
-**Skills:** `/using-superpowers` → verification-before-completion
+**Skills:** `/using-superpowers` → `/find-bugs` → verification-before-completion
+
+**CRITICAL:** Ця задача вимагає попереднього критичного аудиту ВСІХ файлів проєкту!
 
 **Step 1: Використати `/using-superpowers` skill**
 
@@ -888,7 +890,50 @@ coverage report
 
 Expected: All tests pass, coverage >90%
 
-**Step 6: Build binary**
+**Step 6: Push commits to GitHub**
+
+```bash
+git push origin master
+```
+
+**Step 7: Виконати критичний аудит ВСІХ файлів проєкту**
+
+**ОБОВ'ЯЗКОВО після push, але ПЕРЕД tag і release!**
+
+```bash
+# Використати /find-bugs skill для аналізу ВСІХ файлів:
+# - ВСІ source файли проєкту (35+ файлів)
+# - ВСІ workflows
+# - ВСІ нові файли з Phase 7
+# - Створити AUDIT_REPORT_v0.7.0.md
+# - Повна перевірка безпеки (OWASP Top 10)
+```
+
+**Критерії проходження аудиту:**
+- ✅ Немає критичних вразливостей безпеки
+- ✅ Немає ризиків втрати даних
+- ✅ Всі тести проходять
+- ✅ Coverage >90%
+- ⚠️ Середні/низькі проблеми задокументовані для наступних версій
+
+**Якщо знайдено критичні проблеми в production коді:**
+- ЗУПИНИТИ реліз
+- Виправити критичні проблеми
+- **Повторити аудит ВСІХ файлів**
+- Отримати підтвердження користувача
+
+**Якщо проблем немає або тільки рекомендації:**
+- Продовжити до Step 8
+
+**Якщо виправлено тільки тести/CI/CD/документацію:**
+- Повторний аудит НЕ потрібен
+- Продовжити до Step 8
+
+**Step 8: Отримати підтвердження користувача**
+
+Показати AUDIT_REPORT_v0.7.0.md користувачу та отримати явне підтвердження на реліз.
+
+**Step 9: Build binary**
 
 ```bash
 pyinstaller DiskDataAnalyzer.spec
