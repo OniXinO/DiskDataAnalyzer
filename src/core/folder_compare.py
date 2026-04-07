@@ -5,7 +5,7 @@
 import os
 import hashlib
 import logging
-from typing import Dict, Any, List, Set
+from typing import Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +96,7 @@ class FolderCompare:
         files = []
 
         if self.recursive:
-            for root, dirs, filenames in os.walk(path):
+            for root, _, filenames in os.walk(path):
                 for filename in filenames:
                     files.append(os.path.join(root, filename))
         else:

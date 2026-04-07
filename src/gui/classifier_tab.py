@@ -6,7 +6,6 @@ import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 import os
 import threading
-from typing import Optional
 
 from core.file_classifier import FileClassifier
 from core.llm_registry import LLMRegistry
@@ -137,7 +136,6 @@ class ClassifierTab(ttk.Frame):
             llm_provider = None
 
             if use_llm:
-                provider_name = self.provider_var.get()
                 # TODO: Отримати API ключ від користувача
                 # Поки що без LLM провайдера
                 pass
@@ -185,7 +183,7 @@ class ClassifierTab(ttk.Frame):
         files = []
 
         if recursive:
-            for root, dirs, filenames in os.walk(folder):
+            for root, _, filenames in os.walk(folder):
                 for filename in filenames:
                     files.append(os.path.join(root, filename))
         else:

@@ -188,7 +188,7 @@ class DirectoryTree:
         return '\n'.join(lines)
 
     def _export_node(self, node: Dict[str, Any], prefix: str,
-                    is_last: bool, lines: List[str],
+                    _: bool, lines: List[str],
                     symbols: Dict[str, str]):
         """
         Рекурсивно експортувати вузол

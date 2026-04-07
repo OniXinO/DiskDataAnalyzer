@@ -23,7 +23,7 @@ def find_large_files(directory: str, min_size: int = 100*1024*1024, limit: int =
     large_files = []
 
     try:
-        for root, dirs, files in os.walk(directory):
+        for root, _, files in os.walk(directory):
             for filename in files:
                 filepath = os.path.join(root, filename)
 

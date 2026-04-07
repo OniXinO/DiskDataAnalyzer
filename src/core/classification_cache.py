@@ -4,7 +4,6 @@
 """
 
 import sqlite3
-import json
 import time
 import logging
 from typing import Optional, Dict, Any

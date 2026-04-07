@@ -6,7 +6,7 @@ import os
 import hashlib
 import logging
 import fnmatch
-from typing import Dict, Any, List, Set, Optional
+from typing import Dict, Any, List, Optional
 from collections import defaultdict
 
 logger = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ class JunkDetector:
         files = []
 
         if self.recursive:
-            for root, dirs, filenames in os.walk(self.root_path):
+            for root, _, filenames in os.walk(self.root_path):
                 for filename in filenames:
                     files.append(os.path.join(root, filename))
         else:
@@ -206,7 +206,7 @@ class JunkDetector:
         empty_folders = []
 
         if self.recursive:
-            for root, dirs, files in os.walk(self.root_path, topdown=False):
+            for root, _, _ in os.walk(self.root_path, topdown=False):
                 # Пропустити кореневу папку
                 if root == self.root_path:
                     continue
