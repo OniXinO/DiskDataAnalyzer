@@ -15,7 +15,6 @@ from collections import defaultdict
 import hashlib
 import zipfile
 import tarfile
-import json
 
 # Імпорт експортерів
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
@@ -249,7 +248,7 @@ def find_duplicates(path, min_size=1024*1024):
 
     # Групування за розміром
     try:
-        for root, dirs, files in os.walk(path):
+        for root, _, files in os.walk(path):
             for filename in files:
                 filepath = os.path.join(root, filename)
                 try:
